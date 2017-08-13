@@ -182,7 +182,6 @@ def train():
         with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
           print('scope: {}'.format(scope))
           print('tf scope: {}'.format(tf.get_variable_scope()))
-          assert scope is tf.get_variable_scope(), 'AHHHHH'
           print('REUSE ON, i={}'.format(i))
           # Calculate the loss for one tower of the CIFAR model. This function
           # constructs the entire CIFAR model but shares the variables across
