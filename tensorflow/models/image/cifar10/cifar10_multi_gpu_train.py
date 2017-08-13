@@ -180,8 +180,8 @@ def train():
           loss = tower_loss(scope)
 
           # Reuse variables for the next tower.
-          #tf.get_variable_scope().reuse_variables()
-
+          tf.get_variable_scope().reuse_variables()
+          _reuse = True 
           # Retain the summaries from the final tower.
           summaries = tf.get_collection(tf.GraphKeys.SUMMARIES, scope)
 
