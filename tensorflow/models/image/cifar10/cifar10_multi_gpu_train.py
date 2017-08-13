@@ -179,7 +179,7 @@ def train():
     tower_grads = []
     for i in xrange(FLAGS.num_gpus):
       with tf.device('/gpu:%d' % i):
-        with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
+        with tf.variable_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
           print('scope: {}'.format(scope))
           print('tf scope: {}'.format(tf.get_variable_scope()))
           assert scope is tf.get_variable_scope(), 'AHHHHH'
@@ -190,7 +190,7 @@ def train():
           loss = tower_loss(scope)
 
           # Reuse variables for the next tower.
-          scope.reuse_variables()
+          tf.get_variable_scope().reuse_variables()
 
           # Retain the summaries from the final tower.
           summaries = tf.get_collection(tf.GraphKeys.SUMMARIES, scope)
