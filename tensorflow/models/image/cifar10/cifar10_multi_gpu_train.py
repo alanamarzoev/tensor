@@ -174,13 +174,15 @@ def train():
     for i in xrange(FLAGS.num_gpus):
       with tf.device('/gpu:%d' % i):
         with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
+          if i == 0:
+              tf.get_variable_scope().reuse = False
           # Calculate the loss for one tower of the CIFAR model. This function
           # constructs the entire CIFAR model but shares the variables across
           # all towers.
           loss = tower_loss(scope)
 
           # Reuse variables for the next tower.
-          #tf.get_variable_scope().reuse_variables()
+          tf.get_variable_scope().reuse_variables()
 
           # Retain the summaries from the final tower.
           summaries = tf.get_collection(tf.GraphKeys.SUMMARIES, scope)
