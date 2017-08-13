@@ -94,6 +94,8 @@ def tower_loss(scope):
   print('second one')
   loss_averages_op = loss_averages.apply([total_loss])
   print('donezo')
+  loss_averages_op = loss_averages.apply(losses + [total_loss])
+  print('real')
 
   # Attach a scalar summary to all individual losses and the total loss; do the
   # same for the averaged version of the losses.
@@ -177,7 +179,8 @@ def train():
     tower_grads = []
     for i in xrange(FLAGS.num_gpus):
       with tf.device('/gpu:%d' % i):
-        with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, 0)) as scope:
+        # with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
+        with tf.name_scope('test_scope') as scope:
           print('REUSE ON, i={}'.format(i))
           # Calculate the loss for one tower of the CIFAR model. This function
           # constructs the entire CIFAR model but shares the variables across
