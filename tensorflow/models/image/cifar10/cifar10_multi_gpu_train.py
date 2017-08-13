@@ -89,7 +89,11 @@ def tower_loss(scope):
 
   # Compute the moving average of all individual losses and the total loss.
   loss_averages = tf.train.ExponentialMovingAverage(0.9, name='avg')
-  loss_averages_op = loss_averages.apply(losses + [total_loss])
+  print('first one')
+  loss_averages_op = loss_averages.apply(losses)
+  print('second one')
+  loss_averages_op = loss_averages.apply([total_loss])
+  print('donezo')
 
   # Attach a scalar summary to all individual losses and the total loss; do the
   # same for the averaged version of the losses.
