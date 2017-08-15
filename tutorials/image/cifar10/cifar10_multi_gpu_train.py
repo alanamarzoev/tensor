@@ -114,6 +114,7 @@ def average_gradients(tower_grads):
      across all towers.
   """
   average_grads = []
+  print('tg: {}'.format(tower_grads))
   for grad_and_vars in zip(*tower_grads):
     # Note that each grad_and_vars looks like the following:
     #   ((grad0_gpu0, var0_gpu0), ... , (grad0_gpuN, var0_gpuN))
@@ -178,6 +179,7 @@ def train():
             # constructs the entire CIFAR model but shares the variables across
             # all towers.
             loss = tower_loss(scope, image_batch, label_batch)
+            print("loss " + str(loss))
 
             # Reuse variables for the next tower.
             tf.get_variable_scope().reuse_variables()
