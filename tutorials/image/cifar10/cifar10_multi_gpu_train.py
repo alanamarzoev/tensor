@@ -79,6 +79,7 @@ def tower_loss(scope, images, labels):
   # logits = cifar10.inference(images)
   logits, endpoints = inception.inception_resnet_v2(images)
 
+  logits_final = logits + endpoints["AuxLogits"]
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
   _ = inception.loss(logits, labels)
