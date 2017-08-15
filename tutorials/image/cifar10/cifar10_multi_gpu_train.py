@@ -48,6 +48,7 @@ import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 import cifar10
+from slim.nets import inception_resnet_v2 as inception
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -75,11 +76,12 @@ def tower_loss(scope, images, labels):
   """
 
   # Build inference Graph.
-  logits = cifar10.inference(images)
+  # logits = cifar10.inference(images)
+  logits, endpoints = inception.inception_resnet_v2(images)
 
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
-  _ = cifar10.loss(logits, labels)
+  _ = inception_resnet_v2.loss(logits, labels)
 
   # Assemble all of the losses for the current tower only.
   losses = tf.get_collection('losses', scope)
