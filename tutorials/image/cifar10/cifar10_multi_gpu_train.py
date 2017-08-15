@@ -81,7 +81,7 @@ def tower_loss(scope, images, labels):
 
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
-  _ = inception_resnet_v2.loss(logits, labels)
+  _ = inception.loss(logits, labels)
 
   # Assemble all of the losses for the current tower only.
   losses = tf.get_collection('losses', scope)
