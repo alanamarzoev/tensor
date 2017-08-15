@@ -118,6 +118,9 @@ def average_gradients(tower_grads):
   print('num_tg: {}'.format(len(tower_grads)))
   for i, tg in enumerate(tower_grads):
       print('len tg {}: {}'.format(i, len(tg)))
+      for j, (g, _) in tg:
+          if g is None:
+              print('{}:{} None!'.format(i, j))
   for grad_and_vars in zip(*tower_grads):
     # Note that each grad_and_vars looks like the following:
     #   ((grad0_gpu0, var0_gpu0), ... , (grad0_gpuN, var0_gpuN))
@@ -125,7 +128,7 @@ def average_gradients(tower_grads):
     for g, _ in grad_and_vars:
       if g is None:
           print('AHHHH')
-          continue 
+          continue
       # Add 0 dimension to the gradients to represent the tower.
       expanded_g = tf.expand_dims(g, 0)
 
