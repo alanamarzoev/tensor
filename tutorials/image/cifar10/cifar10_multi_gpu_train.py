@@ -82,7 +82,7 @@ def tower_loss(scope, images, labels):
   logits_final = logits + endpoints["AuxLogits"]
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
-  _ = inception.loss(logits, labels)
+  _ = inception.loss(logits_final, labels)
 
   # Assemble all of the losses for the current tower only.
   losses = tf.get_collection('losses', scope)
