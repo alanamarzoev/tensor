@@ -200,23 +200,23 @@ def inception_resnet_v2_base(inputs,
       use_atrous = output_stride == 8
 
       with tf.variable_scope('Mixed_6a'):
-        # with tf.variable_scope('Branch_0'):
-        #   tower_conv = slim.conv2d(net, 384, 3, stride=1 if use_atrous else 2,
-        #                            padding=padding,
-        #                            scope='Conv2d_1a_3x3')
+        with tf.variable_scope('Branch_0'):
+          tower_conv = slim.conv2d(net, 384, 3, stride=1 if use_atrous else 2,
+                                   padding=padding,
+                                   scope='Conv2d_1a_3x3')
         with tf.variable_scope('Branch_1'):
           tower_conv1_0 = slim.conv2d(net, 256, 1, scope='Conv2d_0a_1x1')
           tower_conv1_1 = slim.conv2d(tower_conv1_0, 256, 3,
                                       scope='Conv2d_0b_3x3')
-        #   tower_conv1_2 = slim.conv2d(tower_conv1_1, 384, 3,
-        #                               stride=1 if use_atrous else 2,
-        #                               padding=padding,
-        #                               scope='Conv2d_1a_3x3')
-        # with tf.variable_scope('Branch_2'):
-        #   tower_pool = slim.max_pool2d(net, 3, stride=1 if use_atrous else 2,
-        #                                padding=padding,
-        #                                scope='MaxPool_1a_3x3')
-        # net = tf.concat([tower_conv, tower_conv1_2, tower_pool], 3)
+          tower_conv1_2 = slim.conv2d(tower_conv1_1, 384, 3,
+                                      stride=1 if use_atrous else 2,
+                                      padding=padding,
+                                      scope='Conv2d_1a_3x3')
+        with tf.variable_scope('Branch_2'):
+          tower_pool = slim.max_pool2d(net, 3, stride=1 if use_atrous else 2,
+                                       padding=padding,
+                                       scope='MaxPool_1a_3x3')
+        net = tf.concat([tower_conv, tower_conv1_2, tower_pool], 3)
 
       if add_and_check_final('Mixed_6a', net): return net, end_points
 
