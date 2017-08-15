@@ -120,6 +120,7 @@ def average_gradients(tower_grads):
     #   ((grad0_gpu0, var0_gpu0), ... , (grad0_gpuN, var0_gpuN))
     grads = []
     for g, _ in grad_and_vars:
+      print("g " + str(g))
       # Add 0 dimension to the gradients to represent the tower.
       expanded_g = tf.expand_dims(g, 0)
 
