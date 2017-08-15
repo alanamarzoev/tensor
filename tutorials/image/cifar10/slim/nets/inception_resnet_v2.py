@@ -163,9 +163,9 @@ def inception_resnet_v2_base(inputs,
                         scope='Conv2d_4a_3x3')
       if add_and_check_final('Conv2d_4a_3x3', net): return net, end_points
       # 35 x 35 x 192
-      net = slim.max_pool2d(net, 3, stride=2, padding=padding,
-                            scope='MaxPool_5a_3x3')
-      if add_and_check_final('MaxPool_5a_3x3', net): return net, end_points
+    #   net = slim.max_pool2d(net, 3, stride=2, padding=padding,
+    #                         scope='MaxPool_5a_3x3')
+    #   if add_and_check_final('MaxPool_5a_3x3', net): return net, end_points
 
       # 35 x 35 x 320
       with tf.variable_scope('Mixed_5b'):
