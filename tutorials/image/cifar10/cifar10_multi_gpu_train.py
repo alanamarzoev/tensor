@@ -114,7 +114,7 @@ def average_gradients(tower_grads):
      across all towers.
   """
   average_grads = []
-  print('tg: {}'.format(tower_grads))
+  #print('tg: {}'.format(tower_grads))
   for grad_and_vars in zip(*tower_grads):
     # Note that each grad_and_vars looks like the following:
     #   ((grad0_gpu0, var0_gpu0), ... , (grad0_gpuN, var0_gpuN))
