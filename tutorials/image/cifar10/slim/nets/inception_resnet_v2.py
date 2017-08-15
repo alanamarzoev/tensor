@@ -138,6 +138,8 @@ def inception_resnet_v2_base(inputs,
   with tf.variable_scope(scope, 'InceptionResnetV2', [inputs]):
     with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
                         stride=1, padding='SAME'):
+      print(inputs.size)
+      
       # 149 x 149 x 32
       net = slim.conv2d(inputs, 32, 3, stride=2, padding=padding,
                         scope='Conv2d_1a_3x3')
@@ -163,9 +165,9 @@ def inception_resnet_v2_base(inputs,
                         scope='Conv2d_4a_3x3')
       if add_and_check_final('Conv2d_4a_3x3', net): return net, end_points
       # 35 x 35 x 192
-    #   net = slim.max_pool2d(net, 3, stride=2, padding=padding,
-    #                         scope='MaxPool_5a_3x3')
-    #   if add_and_check_final('MaxPool_5a_3x3', net): return net, end_points
+      net = slim.max_pool2d(net, 3, stride=2, padding=padding,
+                            scope='MaxPool_5a_3x3')
+      if add_and_check_final('MaxPool_5a_3x3', net): return net, end_points
 
       # 35 x 35 x 320
       with tf.variable_scope('Mixed_5b'):
