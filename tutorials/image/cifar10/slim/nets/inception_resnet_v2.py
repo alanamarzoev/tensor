@@ -216,7 +216,8 @@ def inception_resnet_v2_base(inputs,
         #                                scope='MaxPool_1a_3x3')
         # net = tf.concat([tower_conv, tower_conv1_2, tower_pool], 3)
 
-      if add_and_check_final('Mixed_6a', net): return net, end_points
+      if add_and_check_final('Mixed_6a', net):
+          return net, end_points
 
       # TODO(alemi): register intermediate endpoints
       with slim.arg_scope([slim.conv2d], rate=2 if use_atrous else 1):
