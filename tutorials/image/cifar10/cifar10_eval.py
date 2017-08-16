@@ -136,6 +136,9 @@ def evaluate():
     print(num_got.get_shape().as_list())
     acc = num_got/logits.get_shape().as_list()
     print(str(acc))
+    print("NUM GOT: ")
+    num_true = tf.reduce_sum(tf.cast(top_k_op, tf.int32))
+    print(num_true)
 
     # Restore the moving average version of the learned variables for eval.
     # variable_averages = tf.train.ExponentialMovingAverage(
