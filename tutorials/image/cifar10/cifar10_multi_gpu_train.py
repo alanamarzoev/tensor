@@ -315,7 +315,6 @@ def train():
         format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
                       'sec/batch)')
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
-        eval_once(saver, summary_writer, top_k_op, summary_op)
         print (format_str % (datetime.now(), step, loss_value,
                              examples_per_sec, sec_per_batch))
 
@@ -326,9 +325,9 @@ def train():
       # Save the model checkpoint periodically.
       if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
-        eval_once(saver, summary_writer, top_k_op, summary_op)
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
+        eval_once(saver, summary_writer, top_k_op, summary_op)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
