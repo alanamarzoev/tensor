@@ -125,10 +125,10 @@ def evaluate():
     # inference model.
     # logits = cifar10.inference(images)
     logits, endpoints = inception.inception_resnet_v2(images)
-    logits_final = logits + endpoints["AuxLogits"]
+    #ogits_final = logits + endpoints["AuxLogits"]
 
     # Calculate predictions.
-    top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
+    top_k_op = tf.nn.in_top_k(logits, labels, 1)
     num_got = tf.reduce_sum(tf.cast(myOtherTensor, tf.float32))
     acc = num_got/logits_final.shape
     print(str(acc))
