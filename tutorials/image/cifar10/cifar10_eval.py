@@ -131,9 +131,9 @@ def evaluate():
     top_k_op = tf.nn.in_top_k(logits, labels, 1)
     #hi
     num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-    denom = tensor.get_shape().as_list()
+    denom = logits.get_shape().as_list()
     print(denom)
-    acc = num_got/tensor.get_shape().as_list()
+    acc = num_got/logits.get_shape().as_list()
     print(str(acc))
 
     # Restore the moving average version of the learned variables for eval.
