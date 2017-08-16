@@ -133,7 +133,7 @@ def evaluate():
     num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
     denom = logits.get_shape().as_list()
     print(denom)
-    print(num_got)
+    print(num_got.get_shape().as_list())
     acc = num_got/logits.get_shape().as_list()
     print(str(acc))
 
