@@ -61,6 +61,8 @@ tf.app.flags.DEFINE_integer('num_gpus', 1,
                             """How many GPUs to use.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
+tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/cifar10_train',
+                           """Directory where to read model checkpoints.""")
 
 
 def tower_loss(scope, images, labels):
