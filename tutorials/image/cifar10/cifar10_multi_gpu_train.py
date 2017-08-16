@@ -80,7 +80,7 @@ def tower_loss(scope, images, labels):
   logits, endpoints = inception.inception_resnet_v2(images)
 
   logits_final = logits + endpoints["AuxLogits"]
-  
+
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
   _ = inception.loss(logits_final, labels)
@@ -99,7 +99,7 @@ def tower_loss(scope, images, labels):
     loss_name = re.sub('%s_[0-9]*/' % cifar10.TOWER_NAME, '', l.op.name)
     tf.summary.scalar(loss_name, l)
 
-  return total_loss
+  return total_loss, logits_final
 
 
 def average_gradients(tower_grads):
@@ -182,8 +182,7 @@ def train():
             # Calculate the loss for one tower of the CIFAR model. This function
             # constructs the entire CIFAR model but shares the variables across
             # all towers.
-            loss = tower_loss(scope, image_batch, label_batch)
-            print("loss " + str(loss))
+            loss, logits_final = tower_loss(scope, image_batch, label_batch)
 
             # Reuse variables for the next tower.
             tf.get_variable_scope().reuse_variables()
@@ -268,7 +267,10 @@ def train():
         summary_writer.add_summary(summary_str, step)
 
       # Save the model checkpoint periodically.
-      if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
+      if step % 10 == 0 or (step + 1) == FLAGS.max_steps:
+        top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
+        num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
+        print("ACCURACY" + str(num_got) + " " + batch_size)
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
 
