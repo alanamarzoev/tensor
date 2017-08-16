@@ -270,7 +270,7 @@ def train():
       if step % 10 == 0 or (step + 1) == FLAGS.max_steps:
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
         num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-        print("ACCURACY" + str(num_got) + " " + batch_size)
+        print("ACCURACY" + str(num_got) + " " + str(FLAGS.batch_size))
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
 
