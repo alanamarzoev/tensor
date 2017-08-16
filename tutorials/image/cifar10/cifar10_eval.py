@@ -41,6 +41,7 @@ import time
 import numpy as np
 import tensorflow as tf
 
+from slim.nets import inception_resnet_v2 as inception
 import cifar10
 
 FLAGS = tf.app.flags.FLAGS
@@ -122,27 +123,32 @@ def evaluate():
 
     # Build a Graph that computes the logits predictions from the
     # inference model.
-    logits = cifar10.inference(images)
+    # logits = cifar10.inference(images)
+    logits, endpoints = inception.inception_resnet_v2(images)
+    logits_final = logits + endpoints["AuxLogits"]
 
     # Calculate predictions.
-    top_k_op = tf.nn.in_top_k(logits, labels, 1)
+    top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
+    num_got = tf.reduce_sum(tf.cast(myOtherTensor, tf.float32))
+    acc = num_got/logits_final.shape
+    print(str(acc))
 
     # Restore the moving average version of the learned variables for eval.
-    variable_averages = tf.train.ExponentialMovingAverage(
-        cifar10.MOVING_AVERAGE_DECAY)
-    variables_to_restore = variable_averages.variables_to_restore()
-    saver = tf.train.Saver(variables_to_restore)
+    # variable_averages = tf.train.ExponentialMovingAverage(
+    #     cifar10.MOVING_AVERAGE_DECAY)
+    # variables_to_restore = variable_averages.variables_to_restore()
+    # saver = tf.train.Saver(variables_to_restore)
 
     # Build the summary operation based on the TF collection of Summaries.
-    summary_op = tf.summary.merge_all()
-
-    summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
-
-    while True:
-      eval_once(saver, summary_writer, top_k_op, summary_op)
-      if FLAGS.run_once:
-        break
-      time.sleep(FLAGS.eval_interval_secs)
+    # summary_op = tf.summary.merge_all()
+    #
+    # summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
+    #
+    # while True:
+    #   eval_once(saver, summary_writer, top_k_op, summary_op)
+    #   if FLAGS.run_once:
+    #     break
+    #   time.sleep(FLAGS.eval_interval_secs)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
