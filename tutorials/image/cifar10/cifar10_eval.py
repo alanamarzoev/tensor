@@ -130,12 +130,12 @@ def evaluate():
     # Calculate predictions.
     top_k_op = tf.nn.in_top_k(logits, labels, 1)
     #hi
-    num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-    denom = logits.get_shape().as_list()
-    print(denom)
-    print(num_got.get_shape().as_list())
-    acc = num_got/logits.get_shape().as_list()
-    print(str(acc))
+    # num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
+    # denom = logits.get_shape().as_list()
+    # print(denom)
+    # print(num_got.get_shape().as_list())
+    # acc = num_got/logits.get_shape().as_list()
+    # print(str(acc))
     print("NUM GOT: ")
     num_true = tf.reduce_sum(tf.cast(top_k_op, tf.int32))
     print(num_true)
