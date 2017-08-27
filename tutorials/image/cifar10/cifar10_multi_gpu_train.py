@@ -147,7 +147,7 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(saver, summary_writer, top_k_op, summary_op):
+def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
   """Run Eval once.
 
   Args:
@@ -157,17 +157,17 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
     summary_op: Summary op.
   """
   with tf.Session() as sess:
-    ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
-    if ckpt and ckpt.model_checkpoint_path:
-      # Restores from checkpoint
-      saver.restore(sess, ckpt.model_checkpoint_path)
-      # Assuming model_checkpoint_path looks something like:
-      #   /my-favorite-path/cifar10_train/model.ckpt-0,
-      # extract global_step from it.
-      global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
-    else:
-      print('No checkpoint file found')
-      return
+    # ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
+    # if ckpt and ckpt.model_checkpoint_path:
+    #   # Restores from checkpoint
+    #   # saver.restore(sess, ckpt.model_checkpoint_path)
+    #   # Assuming model_checkpoint_path looks something like:
+    #   #   /my-favorite-path/cifar10_train/model.ckpt-0,
+    #   # extract global_step from it.
+    #   global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
+    # else:
+    #   print('No checkpoint file found')
+    #   return
 
     # Start the queue runners.
     coord = tf.train.Coordinator()
@@ -330,7 +330,7 @@ def train():
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
-        eval_once(saver, summary_writer, top_k_op, summary_op)
+        eval_once(saver, summary_writer, top_k_op, summary_op, global_step=step)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
