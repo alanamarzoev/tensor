@@ -151,13 +151,13 @@ def eval_once(saver, summary_writer, top_k_op, global_step):
     #top_k_op = tf.nn.in_top_k(logits, labels, 1)
     total_sample_count = FLAGS.batch_size
     true_count = 0
-    num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-    print("NUM GOT " + str(num_got))
+    # num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
+    # print("NUM GOT " + str(num_got))
 
-    sess = tf.Session()
-    scalar = sess.run(num_got)
+    # sess = tf.Session()
+    # scalar = sess.run(num_got)
     #num_got.split("Sum:")
-    true_count += scalar
+    true_count += top_k_op 
     precision = true_count / total_sample_count
     print("PRECISION " + str(precision))
     print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
@@ -309,6 +309,10 @@ def train():
       # Save the model checkpoint periodically.
       if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
+        summation = tf.reduce_sum(top_k_op)
+        sess = tf.Session()
+        top_k_op = sess.run(summation)
+        print("TOPPP: " + str(top_k_op))
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
         eval_once(saver, summary_writer, top_k_op, global_step=step)
