@@ -149,39 +149,6 @@ def average_gradients(tower_grads):
 
 def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
               labels):
-   """Run Eval once.
-
-  Args:
-    saver: Saver.
-    summary_writer: Summary writer.
-    top_k_op: Top K op.
-    summary_op: Summary op.
-  """
-    #with tf.Session() as sess:
-    # ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
-    # if ckpt and ckpt.model_checkpoint_path:
-    #   # Restores from checkpoint
-    #   # saver.restore(sess, ckpt.model_checkpoint_path)
-    #   # Assuming model_checkpoint_path looks something like:
-    #   #   /my-favorite-path/cifar10_train/model.ckpt-0,
-    #   # extract global_step from it.
-    #   global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
-    # else:
-    #   print('No checkpoint file found')
-    #   return
-
-    # Start the queue runners.
-    # coord = tf.train.Coordinator()
-    # try:
-    #   threads = []
-    #   for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
-    #     threads.extend(qr.create_threads(sess, coord=coord, daemon=True,
-    #                                      start=True))
-    #   num_examples = 10000
-    #   num_iter = int(math.ceil(num_examples / FLAGS.batch_size))
-
-
-    #   total_sample_count = num_iter * FLAGS.batch_size
     true_count = 0
     predictions = tf.nn.in_top_k(logits, labels, 1)
     true_count += np.sum(predictions)
