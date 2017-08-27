@@ -305,7 +305,7 @@ def train():
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
         eval_once(saver, summary_writer, top_k_op, summary_op, global_step=step,
-                  logits, labels)
+                  logits_final, labels)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
