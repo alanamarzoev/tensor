@@ -149,7 +149,7 @@ def average_gradients(tower_grads):
 
 def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
               labels):
-  """Run Eval once.
+   """Run Eval once.
 
   Args:
     saver: Saver.
@@ -157,7 +157,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
     top_k_op: Top K op.
     summary_op: Summary op.
   """
-   #with tf.Session() as sess:
+    #with tf.Session() as sess:
     # ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
     # if ckpt and ckpt.model_checkpoint_path:
     #   # Restores from checkpoint
@@ -182,7 +182,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
 
 
     #   total_sample_count = num_iter * FLAGS.batch_size
-    true_count = 0  
+    true_count = 0
     predictions = tf.nn.in_top_k(logits, labels, 1)
     true_count += np.sum(predictions)
     precision = true_count / total_sample_count
