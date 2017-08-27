@@ -151,10 +151,9 @@ def eval_once(saver, summary_writer, top_k_op, global_step):
     #top_k_op = tf.nn.in_top_k(logits, labels, 1)
     total_sample_count = FLAGS.batch_size
     true_count = 0
-    with tf.Session() as sess:
-        num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-        scalar = num_got.eval()
-    print("NUMGOT " + str(scalar))
+    num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
+    print("NUM GOT " + str(num_got))
+    #num_got.split("Sum:")
     true_count += scalar
     precision = true_count / total_sample_count
     print("PRECISION " + str(precision))
