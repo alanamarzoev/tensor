@@ -148,7 +148,7 @@ def average_gradients(tower_grads):
   return average_grads
 
 def eval_once(saver, summary_writer, top_k_op, global_step):
-    top_k_op = tf.nn.in_top_k(logits, labels, 1)
+    #top_k_op = tf.nn.in_top_k(logits, labels, 1)
     true_count = 0
     num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
     true_count += num_got
@@ -291,7 +291,7 @@ def train():
 
         format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
                       'sec/batch)')
-        
+
         print (format_str % (datetime.now(), step, loss_value,
                              examples_per_sec, sec_per_batch))
 
