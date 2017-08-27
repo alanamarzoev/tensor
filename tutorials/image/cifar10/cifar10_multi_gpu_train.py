@@ -147,7 +147,8 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
+def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
+              labels):
   """Run Eval once.
 
   Args:
@@ -156,7 +157,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
     top_k_op: Top K op.
     summary_op: Summary op.
   """
-  with tf.Session() as sess:
+   #with tf.Session() as sess:
     # ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
     # if ckpt and ckpt.model_checkpoint_path:
     #   # Restores from checkpoint
@@ -170,36 +171,42 @@ def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
     #   return
 
     # Start the queue runners.
-    coord = tf.train.Coordinator()
-    try:
-      threads = []
-      for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
-        threads.extend(qr.create_threads(sess, coord=coord, daemon=True,
-                                         start=True))
-      num_examples = 10000
-      num_iter = int(math.ceil(num_examples / FLAGS.batch_size))
-      true_count = 0  # Counts the number of correct predictions.
-      total_sample_count = num_iter * FLAGS.batch_size
+    # coord = tf.train.Coordinator()
+    # try:
+    #   threads = []
+    #   for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
+    #     threads.extend(qr.create_threads(sess, coord=coord, daemon=True,
+    #                                      start=True))
+    #   num_examples = 10000
+    #   num_iter = int(math.ceil(num_examples / FLAGS.batch_size))
+        true_count = 0  # Counts the number of correct predictions.
 
-      step = 0
-      while step < num_iter and not coord.should_stop():
-        predictions = sess.run([top_k_op])
-        true_count += np.sum(predictions)
-        step += 1
+    #   total_sample_count = num_iter * FLAGS.batch_size
 
-      # Compute precision @ 1.
+      predictions = tf.nn.in_top_k(logits, labels, 1)
+      true_count += np.sum(predictions)
       precision = true_count / total_sample_count
       print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
 
-      summary = tf.Summary()
-      summary.ParseFromString(sess.run(summary_op))
-      summary.value.add(tag='Precision @ 1', simple_value=precision)
-      summary_writer.add_summary(summary, global_step)
-    except Exception as e:  # pylint: disable=broad-except
-      coord.request_stop(e)
+    #   step = 0
+    #   while step < num_iter and not coord.should_stop():
+    #     predictions = sess.run([top_k_op])
+    #     true_count += np.sum(predictions)
+    #     step += 1
 
-    coord.request_stop()
-    coord.join(threads, stop_grace_period_secs=10)
+    #   # Compute precision @ 1.
+    #   precision = true_count / total_sample_count
+    #   print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
+
+    #   summary = tf.Summary()
+    #   summary.ParseFromString(sess.run(summary_op))
+    #   summary.value.add(tag='Precision @ 1', simple_value=precision)
+    #   summary_writer.add_summary(summary, global_step)
+    # except Exception as e:  # pylint: disable=broad-except
+    #   coord.request_stop(e)
+    #
+    # coord.request_stop()
+    # coord.join(threads, stop_grace_period_secs=10)
 
 def train():
   """Train CIFAR-10 for a number of steps."""
@@ -330,7 +337,8 @@ def train():
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
-        eval_once(saver, summary_writer, top_k_op, summary_op, global_step=step)
+        eval_once(saver, summary_writer, top_k_op, summary_op, global_step=step,
+                  logits, labels)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
