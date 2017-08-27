@@ -147,7 +147,7 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
+def eval_once(saver, summary_writer, top_k_op, global_step):
     true_count = 0
     true_count += np.sum(top_k_op)
     precision = true_count / total_sample_count
