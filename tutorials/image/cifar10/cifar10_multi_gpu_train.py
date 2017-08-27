@@ -151,7 +151,8 @@ def eval_once(saver, summary_writer, top_k_op, global_step):
     #top_k_op = tf.nn.in_top_k(logits, labels, 1)
     total_sample_count = FLAGS.batch_size
     true_count = 0
-    num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
+    num_got = tf.reduce_sum(tf.cast(top_k_op, tf.int32))
+    print("NUMGOT " + str(num_got))
     true_count += num_got
     precision = true_count / total_sample_count
     print("PRECISION " + str(precision))
