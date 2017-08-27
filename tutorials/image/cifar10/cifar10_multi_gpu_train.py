@@ -310,7 +310,7 @@ def train():
       if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
         summation = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-        sess = tf.Session()
+        # sess = tf.Session()
         top_k_op = sess.run(summation)
         print("TOPPP: " + str(top_k_op))
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
