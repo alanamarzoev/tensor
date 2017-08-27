@@ -147,11 +147,9 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
-              labels):
+def eval_once(saver, summary_writer, top_k_op, summary_op, global_step):
     true_count = 0
-    predictions = tf.nn.in_top_k(logits, labels, 1)
-    true_count += np.sum(predictions)
+    true_count += np.sum(top_k_op)
     precision = true_count / total_sample_count
     print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
 
@@ -304,8 +302,7 @@ def train():
         top_k_op = tf.nn.in_top_k(logits_final, labels, 1)
         checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=step)
-        eval_once(saver, summary_writer, top_k_op, summary_op, global_step=step,
-                  logits_final, labels)
+        eval_once(saver, summary_writer, top_k_op, global_step=step)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
