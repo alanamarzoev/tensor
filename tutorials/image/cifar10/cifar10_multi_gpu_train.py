@@ -286,7 +286,8 @@ def train():
 
     for step in xrange(FLAGS.max_steps):
       start_time = time.time()
-      _, loss_value = sess.run([train_op, loss])
+    #   _, loss_value = sess.run([train_op, loss])
+      _, = sess.run([train_op])
       duration = time.time() - start_time
 
     #   assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
