@@ -63,8 +63,9 @@ tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
 tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/cifar10_train',
                            """Directory where to read model checkpoints.""")
-tf.app.flags.DEFINE_string('batch_size', '32',
-                           """Directory where to read model checkpoints.""")
+tf.app.flags.DEFINE_integer('batch_size', 32,
+                           """How many GPUs to use.""")
+
 
 
 def tower_loss(scope, images, labels):
