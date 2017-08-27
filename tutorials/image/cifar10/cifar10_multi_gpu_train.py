@@ -43,6 +43,7 @@ from datetime import datetime
 import os.path
 import re
 import time
+import math
 
 import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
