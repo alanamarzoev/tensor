@@ -149,6 +149,7 @@ def average_gradients(tower_grads):
 
 def eval_once(saver, summary_writer, top_k_op, global_step):
     #top_k_op = tf.nn.in_top_k(logits, labels, 1)
+    total_sample_count = FLAGS.batch_size 
     true_count = 0
     num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
     true_count += num_got
