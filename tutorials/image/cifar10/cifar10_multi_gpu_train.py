@@ -147,7 +147,7 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(saver, summary_writer, top_k_op, global_step):
+def eval_once(top_k_op, global_step):
     #top_k_op = tf.nn.in_top_k(logits, labels, 1)
     total_sample_count = FLAGS.batch_size
     true_count = 0
@@ -287,7 +287,7 @@ def train():
     for step in xrange(FLAGS.max_steps):
       start_time = time.time()
     #   _, loss_value = sess.run([train_op, loss])
-      _, = sess.run([train_op])
+      sess.run([train_op])
       duration = time.time() - start_time
 
     #   assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
@@ -312,10 +312,11 @@ def train():
         summation = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
         # sess = tf.Session()
         top_k_op = sess.run(summation)
-        # print("TOPPP: " + str(top_k_op))
-        # checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
-        # saver.save(sess, checkpoint_path, global_step=step)
-        eval_once(saver, summary_writer, top_k_op, global_step=step)
+        total_sample_count = FLAGS.batch_size
+        true_count = 0
+        true_count += top_k_op
+        precision = true_count / total_sample_count
+        print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
 
 
 def main(argv=None):  # pylint: disable=unused-argument
