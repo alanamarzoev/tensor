@@ -304,7 +304,7 @@ def train():
         #                      examples_per_sec, sec_per_batch))
 
       if step % 100 == 0:
-        print("step: " + str(step) + " time: " + str(datetime.now()))
+        print("step: " + str(step))
 
       # Save the model checkpoint periodically.
       if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
@@ -312,9 +312,9 @@ def train():
         summation = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
         # sess = tf.Session()
         top_k_op = sess.run(summation)
-        print("TOPPP: " + str(top_k_op))
-        checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
-        saver.save(sess, checkpoint_path, global_step=step)
+        # print("TOPPP: " + str(top_k_op))
+        # checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
+        # saver.save(sess, checkpoint_path, global_step=step)
         eval_once(saver, summary_writer, top_k_op, global_step=step)
 
 
