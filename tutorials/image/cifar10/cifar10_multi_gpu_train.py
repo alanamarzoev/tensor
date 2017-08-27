@@ -153,6 +153,9 @@ def eval_once(saver, summary_writer, top_k_op, global_step):
     true_count = 0
     num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
     print("NUM GOT " + str(num_got))
+
+    sess = tf.Session()
+    scalar = sess.run(num_got)
     #num_got.split("Sum:")
     true_count += scalar
     precision = true_count / total_sample_count
