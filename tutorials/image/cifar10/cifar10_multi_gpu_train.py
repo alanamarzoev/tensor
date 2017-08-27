@@ -179,6 +179,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op, global_step, logits,
     #                                      start=True))
     #   num_examples = 10000
     #   num_iter = int(math.ceil(num_examples / FLAGS.batch_size))
+
     true_count = 0  # Counts the number of correct predictions.
 
     #   total_sample_count = num_iter * FLAGS.batch_size
