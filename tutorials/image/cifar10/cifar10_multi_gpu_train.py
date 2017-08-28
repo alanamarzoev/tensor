@@ -147,40 +147,6 @@ def average_gradients(tower_grads):
     average_grads.append(grad_and_var)
   return average_grads
 
-def eval_once(top_k_op, global_step):
-    #top_k_op = tf.nn.in_top_k(logits, labels, 1)
-    total_sample_count = FLAGS.batch_size
-    true_count = 0
-    # num_got = tf.reduce_sum(tf.cast(top_k_op, tf.float32))
-    # print("NUM GOT " + str(num_got))
-
-    # sess = tf.Session()
-    # scalar = sess.run(num_got)
-    #num_got.split("Sum:")
-    true_count += top_k_op
-    precision = true_count / total_sample_count
-    print("PRECISION " + str(precision))
-    print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
-
-    #   step = 0
-    #   while step < num_iter and not coord.should_stop():
-    #     predictions = sess.run([top_k_op])
-    #     true_count += np.sum(predictions)
-    #     step += 1
-
-    #   # Compute precision @ 1.
-    #   precision = true_count / total_sample_count
-    #   print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
-
-    #   summary = tf.Summary()
-    #   summary.ParseFromString(sess.run(summary_op))
-    #   summary.value.add(tag='Precision @ 1', simple_value=precision)
-    #   summary_writer.add_summary(summary, global_step)
-    # except Exception as e:  # pylint: disable=broad-except
-    #   coord.request_stop(e)
-    #
-    # coord.request_stop()
-    # coord.join(threads, stop_grace_period_secs=10)
 
 def train():
   """Train CIFAR-10 for a number of steps."""
