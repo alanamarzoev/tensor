@@ -284,27 +284,16 @@ def train():
 
     summary_writer = tf.summary.FileWriter(FLAGS.train_dir, sess.graph)
 
+    start_time = datetime.now()
     for step in xrange(FLAGS.max_steps):
-      start_time = time.time()
+    #   start_time = time.time()
     #   _, loss_value = sess.run([train_op, loss])
       sess.run([train_op])
-      duration = time.time() - start_time
 
-    #   assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
-
-    #   if step % 10 == 0:
-    #     num_examples_per_step = FLAGS.batch_size * FLAGS.num_gpus
-    #     examples_per_sec = num_examples_per_step / duration
-    #     sec_per_batch = duration / FLAGS.num_gpus
-      #
-    #     format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
-    #                   'sec/batch)')
-        #
-        # print (format_str % (datetime.now(), step, loss_value,
-        #                      examples_per_sec, sec_per_batch))
 
       if step % 100 == 0:
-        print("step: " + str(step))
+        duration = time.time() - start_time
+        print("step: " + str(step) + "  time_passed: " + str(duration))
 
       # Save the model checkpoint periodically.
       if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
