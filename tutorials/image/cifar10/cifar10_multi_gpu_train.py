@@ -226,7 +226,8 @@ def train():
     variables_averages_op = variable_averages.apply(tf.trainable_variables())
 
     # Group all updates to into a single train op.
-    train_op = tf.group(apply_gradient_op, variables_averages_op)
+    # train_op = tf.group(apply_gradient_op, variables_averages_op)
+    train_op = tf.group(apply_gradient_op)
 
     # Create a saver.
     saver = tf.train.Saver(tf.global_variables())
